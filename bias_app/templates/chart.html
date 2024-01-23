@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView Lightweight Charts</title>
+    <!-- Include TradingView Lightweight Charts script (adjust the URL accordingly) -->
+    <script src="https://unpkg.com/lightweight-charts@latest/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+    <div class="filters">
+        <label>Months:</label>
+        <input type="checkbox" class="month_filter" value="1"> January
+        <input type="checkbox" class="month_filter" value="2"> February
+        <!-- Add checkboxes for the rest of the months -->
+        <br>
+        <label>Years:</label>
+        <input type="checkbox" class="year-filter" value="2022"> 2022
+        <input type="checkbox" class="year-filter" value="2023"> 2023
+        <!-- Add checkboxes for the rest of the years -->
+    </div>
+
+    <!-- Candlestick chart container -->
+    <div class="chart-container" id="candlestick-chart" style="height: 400px; width: 100%;"></div>
+
+    <!-- Line chart container -->
+    <div class="chart-container" id="line-chart" style="height: 400px; width: 100%;"></div>
+
+    <!-- Information display -->
+    <div id="info-div">
+        <p id="info-text">Hover over the chart to see information.</p>
+    </div>
+
+    <script>
+        // Sample data for both Candlestick and Line charts
+        const data = [
+            { time: '2022-01-01', open: 100, high: 110, low: 95, close: 105, value: 105 },
+            { time: '2022-01-02', open: 105, high: 115, low: 100, close: 110, value: 110 },
+            { time: '2022-02-01', open: 110, high: 120, low: 105, close: 115, value: 115 },
+            // Add more data points
+        ];
+
+        // Create a chart object for the Candlestick chart
+        const candlestickChart = LightweightCharts.createChart(document.getElementById('candlestick-chart'), {
+            width: 800,
+            height: 400,
+            timeScale: {
+                rightOffset: 12,
+                barSpacing: 3,
+                fixLeftEdge: true,
+                lockVisibleTimeRangeOnResize: true,
+                rightBarStaysOnScroll: true,
+                borderVisible: false,
+                borderColor: '#fff000',
+                visible: true,
+                timeVisible: true,
+            },
+        });
+
+        // Create the Candlestick series
+        const candlestickSeries = candlestickChart.addCandlestickSeries();
+
+        // Apply the data to the Candlestick series
+        candlestickSeries.setData(data);
+
+        // Create a chart object for the Line chart
+        const lineChart = LightweightCharts.createChart(document.getElementById('line-chart'), {
+            width: 800,
+            height: 400,
+            timeScale: {
+                rightOffset: 12,
+                barSpacing: 3,
+                fixLeftEdge: true,
+                lockVisibleTimeRangeOnResize: true,
+                rightBarStaysOnScroll: true,
+                borderVisible: false,
+                borderColor: '#fff000',
+                visible: true,
+                timeVisible: true,
+            },
+        });
+
+        // Create the Line series
+        const lineSeries = lineChart.addLineSeries();
+
+        // Apply the data to the Line series
+        lineSeries.setData(data.map((point) => ({
+            time: point.time,
+            value: point.value,
+        })));
+
+        // Function to display information
+        function displayInfo(param) {
+            if (param.time && param.seriesPrices) {
+                const infoDiv = document.getElementById('info-text');
+                infoDiv.innerHTML = `
+                    Time: ${new Date(param.time * 1000).toLocaleString()}<br>
+                    Open: ${param.seriesPrices.open || '-'}<br>
+                    High: ${param.seriesPrices.high || '-'}<br>
+                    Low: ${param.seriesPrices.low || '-'}<br>
+                    Close: ${param.seriesPrices.close || '-'}<br>
+                    Value: ${param.seriesPrices.value || '-'}
+                `;
+            }
+        }
+
+        // Add a crosshair move event handler to display information for both charts
+        candlestickChart.subscribeCrosshairMove(displayInfo);
+        lineChart.subscribeCrosshairMove(displayInfo);
+
+        // Function to filter data based on selected months and years
+        function filterData(selectedMonths, selectedYears) {
+            const filteredData = data.filter((point) => {
+                const pointDate = new Date(point.time);
+                const month = pointDate.getMonth() + 1; // Adding 1 because months are 0-indexed
+                const year = pointDate.getFullYear();
+                return (
+                    (selectedMonths.length === 0 || selectedMonths.includes(month)) &&
+                    (selectedYears.length === 0 || selectedYears.includes(year))
+                );
+            });
+            candlestickSeries.setData(filteredData);
+            lineSeries.setData(filteredData.map((point) => ({
+                time: point.time,
+                value: point.value,
+            })));
+        }
+
+        // Listen for changes in month checkboxes
+        const monthFilters = document.querySelectorAll('.month_filter');
+        monthFilters.forEach((filter) => {
+            filter.addEventListener('change', () => {
+                const selectedMonths = Array.from(monthFilters)
+                    .filter((filter) => filter.checked)
+                    .map((filter) => parseInt(filter.value));
+                const selectedYears = getSelectedYears();
+                filterData(selectedMonths, selectedYears);
+            });
+        });
+
+        // Listen for changes in year checkboxes
+        const yearFilters = document.querySelectorAll('.year-filter');
+        yearFilters.forEach((filter) => {
+            filter.addEventListener('change', () => {
+                const selectedYears = getSelectedYears();
+                const selectedMonths = getSelectedMonths();
+                filterData(selectedMonths, selectedYears);
+            });
+        });
+
+        // Get the selected months
+        function getSelectedMonths() {
+            return Array.from(monthFilters)
+                .filter((filter) => filter.checked)
+                .map((filter) => parseInt(filter.value));
+        }
+
+        // Get the selected years
+        function getSelectedYears() {
+            return Array.from(yearFilters)
+                .filter((filter) => filter.checked)
+                .map((filter) => parseInt(filter.value));
+        }
+    </script>
+</body>
+</html>

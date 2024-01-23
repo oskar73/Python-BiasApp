@@ -1,0 +1,672 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <title>BIAS APP</title>
+
+  <meta name="description" content="BIAS APP created by pixelcave and published on Themeforest">
+  <meta name="author" content="pixelcave">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="X-CSRF-TOKEN" content="{{csrf_token}}">
+  <!-- Open Graph Meta -->
+  <meta property="og:title" content="BIAS APP">
+  <meta property="og:site_name" content="Bias App">
+  <meta property="og:description" content="BIAS APP created by pixelcave and published on Themeforest">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <!-- Icons -->
+  <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+  <link rel="shortcut icon" href="{% static 'media/favicons/favicon.png' %}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'media/favicons/favicon-192x192.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'media/favicons/apple-touch-icon-180x180.png' %}">
+  <!-- END Icons -->
+  <link rel="stylesheet" href="{% static 'js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css' %}">
+  <link rel="stylesheet" href="{% static 'js/plugins/select2/css/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'js/plugins/ion-rangeslider/css/ion.rangeSlider.css' %}">
+  <!-- Stylesheets -->
+  <!-- Bias App framework -->
+  <link rel="stylesheet" id="css-main" href="{% static 'css/dashmix.min.css' %}">
+  <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
+  <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/xwork.min.css"> -->
+  <!-- END Stylesheets -->
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.css">
+  <link rel="stylesheet" id="css-main" href="{% static 'css/style.css' %}">
+  <!-- Custom CSS -->
+</head>
+<body data-instrument_id="{{ instrument_id }}">
+  <!-- Page Container -->
+  <div id="page-container" class="instument_detail page-header-dark main-content-boxed">
+    <nav id="sidebar" aria-label="Main Navigation">
+      <!-- Side Header -->
+      <div class="content-header bg-primary">
+        <!-- Logo -->
+        <a class="fw-semibold text-white tracking-wide" href="">
+          Bias
+          <span class="opacity-75"></span>
+          <span class="fw-normal">App</span>
+        </a>
+        <!-- END Logo -->
+        <!-- Options -->
+        <div>
+          <!-- Close Sidebar, Visible only on mobile screens -->
+          <a class="d-lg-none text-white ms-2" data-toggle="layout" data-action="sidebar_close"
+            href="javascript:void(0)">
+            <i class="fa fa-times-circle"></i>
+          </a>
+          <!-- END Close Sidebar -->
+        </div>
+        <!-- END Options -->
+      </div>
+      <!-- END Side Header -->
+
+      <!-- Sidebar Scrolling -->
+      <div class="js-sidebar-scroll">
+        <!-- User Info -->
+        <div class="smini-hidden">
+          <div class="content-side content-side-full bg-black-10 d-flex align-items-center">
+            <a class="img-link d-inline-block" href="javascript:void(0)">
+              <img class="img-avatar img-avatar48 img-avatar-thumb" src="{% static 'media/avatars/avatar13.jpg' %}"
+                alt="">
+            </a>
+            <div class="ms-3">
+              <a class="fw-semibold text-dual" href="javascript:void(0)">John Doe</a>
+              <div class="fs-sm text-dual">Web Developer</div>
+            </div>
+          </div>
+        </div>
+        <!-- END User Info -->
+
+        <!-- Side Navigation -->
+        <div class="content-side content-side-full">
+          <ul class="nav-main">
+            <li class="nav-main-item">
+              <a class="nav-main-link active" href="db_corporate_slim.html">
+                <i class="nav-main-link-icon fa fa-compass"></i>
+                <span class="nav-main-link-name">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-main-item">
+              <a class="nav-main-link" href="">
+                <i class="nav-main-link-icon fa fa-user-circle"></i>
+                <span class="nav-main-link-name">Profile</span>
+              </a>
+            </li>
+            <li class="nav-main-item">
+              <a class="nav-main-link" href="">
+                <i class="nav-main-link-icon fa fa-envelope-open"></i>
+                <span class="nav-main-link-name">Messages</span>
+              </a>
+            </li>
+            <li class="nav-main-heading">More</li>
+            <li class="nav-main-item">
+              <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                aria-expanded="false" href="#">
+                <i class="nav-main-link-icon fa fa-briefcase"></i>
+                <span class="nav-main-link-name">Projects</span>
+              </a>
+              <ul class="nav-main-submenu">
+                <li class="nav-main-item">
+                  <a class="nav-main-link" href="">
+                    <i class="nav-main-link-icon fa fa-check"></i>
+                    <span class="nav-main-link-name">Active</span>
+                    <span class="nav-main-link-badge badge rounded-pill bg-success">3</span>
+                  </a>
+                </li>
+                <li class="nav-main-item">
+                  <a class="nav-main-link" href="">
+                    <i class="nav-main-link-icon fa fa-users"></i>
+                    <span class="nav-main-link-name">Colleagues</span>
+                    <span class="nav-main-link-badge badge rounded-pill bg-primary">24</span>
+                  </a>
+                </li>
+                <li class="nav-main-item">
+                  <a class="nav-main-link" href="">
+                    <i class="nav-main-link-icon fa fa-cog"></i>
+                    <span class="nav-main-link-name">Manage</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!-- END Side Navigation -->
+      </div>
+      <!-- END Sidebar Scrolling -->
+    </nav>
+    <!-- END Sidebar -->
+
+    <!-- Header -->
+    <header id="page-header">
+      <!-- Header Content -->
+      <div class="content-header">
+        <!-- Left Section -->
+        <div class="d-flex align-items-center">
+          <!-- Logo -->
+          <a class="fw-semibold text-dual tracking-wide" href="">
+            Bias<span class="opacity-75"></span>
+            <span class="fw-normal">App</span>
+          </a>
+          <!-- END Logo -->
+
+          <!-- Menu -->
+          <ul class="nav-main nav-main-horizontal nav-main-hover d-none d-lg-block ms-3">
+            <li class="nav-main-item">
+              <a class="nav-main-link active" href="">
+                <i class="nav-main-link-icon fa fa-compass"></i>
+                <span class="nav-main-link-name">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-main-item">
+              <a class="nav-main-link" href="">
+                <i class="nav-main-link-icon fa fa-user-circle"></i>
+                <span class="nav-main-link-name">Profile</span>
+              </a>
+            </li>
+            <li class="nav-main-item">
+              <a class="nav-main-link" href="">
+                <i class="nav-main-link-icon fa fa-envelope-open"></i>
+                <span class="nav-main-link-name">Messages</span>
+              </a>
+            </li>
+            <li class="nav-main-heading">More</li>
+            <li class="nav-main-item">
+              <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                aria-expanded="false" href="#">
+                <i class="nav-main-link-icon fa fa-briefcase"></i>
+                <span class="nav-main-link-name">Projects</span>
+              </a>
+              <ul class="nav-main-submenu">
+                <li class="nav-main-item">
+                  <a class="nav-main-link" href="">
+                    <i class="nav-main-link-icon fa fa-check"></i>
+                    <span class="nav-main-link-name">Active</span>
+                    <span class="nav-main-link-badge badge rounded-pill bg-success">3</span>
+                  </a>
+                </li>
+                <li class="nav-main-item">
+                  <a class="nav-main-link" href="">
+                    <i class="nav-main-link-icon fa fa-users"></i>
+                    <span class="nav-main-link-name">Colleagues</span>
+                    <span class="nav-main-link-badge badge rounded-pill bg-primary">24</span>
+                  </a>
+                </li>
+                <li class="nav-main-item">
+                  <a class="nav-main-link" href="">
+                    <i class="nav-main-link-icon fa fa-cog"></i>
+                    <span class="nav-main-link-name">Manage</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <!-- END Menu -->
+        </div>
+        <!-- END Left Section -->
+
+        <!-- Right Section -->
+        <div>
+
+          <!-- Notifications Dropdown -->
+          <div class="dropdown d-inline-block">
+            <button type="button" class="btn btn-alt-secondary" id="page-header-notifications-dropdown"
+              data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-fw fa-user"></i>
+              <span class="badge bg-black-50 rounded-pill">{{ request.user.username }} </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg p-0"
+              aria-labelledby="page-header-notifications-dropdown">
+              <ul class="nav-items my-2">
+                <li>
+                  <a class="d-flex text-dark py-2" href="{% url 'logout' %}">
+                    <div class="flex-shrink-0 mx-3">
+                      <i class="fa fa-fw fa-user-plus text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 fs-sm pe-2">
+                      <div class="fw-semibold">Logout</div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+              <div class="p-2 border-top">
+                <a class="btn btn-alt-primary w-100 text-center" href="{{ BASE_URL }}/admin">
+                  <i class="fa fa-fw fa-eye opacity-50 me-1"></i> Admin View
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- END Notifications Dropdown -->
+
+          <!-- Toggle Sidebar -->
+          <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+          <button type="button" class="btn btn-alt-secondary d-lg-none" data-toggle="layout"
+            data-action="sidebar_toggle">
+            <i class="fa fa-fw fa-bars"></i>
+          </button>
+          <!-- END Toggle Sidebar -->
+        </div>
+        <!-- END Right Section -->
+      </div>
+      <!-- END Header Content -->
+
+      <!-- Header Loader -->
+      <!-- Please check out the Loaders page under Components category to see examples of showing/hiding it -->
+      <div id="page-header-loader" class="overlay-header bg-primary-darker">
+        <div class="content-header">
+          <div class="w-100 text-center">
+            <i class="fa fa-fw fa-2x fa-sun fa-spin text-white"></i>
+          </div>
+        </div>
+      </div>
+      <!-- END Header Loader -->
+    </header>
+    <!-- END Header -->
+
+
+    <!-- Main Container -->
+    <main id="main-container">
+      <!-- Hero -->
+      <div class="bg-body-extra-light">
+        <div class="content py-0">
+          <div class="block-content block-content-full border-bottom pb-0">
+            <div class="row text-center">
+              <div class="col-lg-2 py-0">
+                <div class="col-md-12 py-0">
+                  <div class="symbols">
+                    <label for="symbol-selector" class="form-label fs-sm fw-bold text-muted">Select a Symbol:</label>
+                    <select id="symbol-selector" class="form-select mb-3">
+                      <option selected value="">Select Symbol</option>
+                      {% for i in instruments %}
+                      <option {% if i.id == instrument_id %}selected {% endif %} value="{{i.id}}">{{i.symbol}}
+                      </option>
+                      {%endfor%}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="filter-group">
+                    <label class="form-label fs-sm fw-bold text-muted mb-2">Year Range:2000 to 2023</label>
+                    <div class="mb-3">
+                      <!-- Add the 'mb-3' class for margin-bottom -->
+                      <div class="js-rangeslider2" style="width: 100%; color: blue;" id="year-slider-range"></div>
+                      <p>
+                        <input type="text" id="year-range-label" class="form-label mt-2"
+                          style="border: 0;color: rgb(7, 127, 240);font-weight: bold;float: left;font-size: 10px;"
+                          size="60" />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-7 py-0">
+                <div class="row items-push">
+
+                  <div class="col-md-12">
+                    <div class="filters">
+                      <div class="filter-group">
+                        <div class="row">
+                          <label class="col-md-1 form-label fs-sm fw-bold text-muted">Months: </label>
+                          <div class="col-md-11 ">
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter-all" class="month-select-all form-check-input"
+                                id="month_filter_all">
+                              <label class="form-check-label fs-sm" for="month_filter_all">Select All</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3 row">
+                          <!-- Add the 'mb-3' class for margin-bottom -->
+                          <div class="col-md-12">
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="January"
+                                value="1">
+                              <label class="form-check-label fs-sm" for="January">January</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="February"
+                                value="2">
+                              <label class="form-check-label fs-sm" for="February">February</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="March" value="3">
+                              <label class="form-check-label fs-sm" for="March">March</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="April" value="4">
+                              <label class="form-check-label fs-sm" for="April">April</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="May" value="5">
+                              <label class="form-check-label fs-sm" for="May">May</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="June" value="6">
+                              <label class="form-check-label fs-sm" for="June">June</label>
+                            </div>
+
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="July" value="7">
+                              <label class="form-check-label fs-sm" for="July">July</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="August" value="8">
+                              <label class="form-check-label fs-sm" for="August">August</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="September"
+                                value="9">
+                              <label class="form-check-label fs-sm" for="September">September</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="October"
+                                value="10">
+                              <label class="form-check-label fs-sm" for="October">October</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="November"
+                                value="11">
+                              <label class="form-check-label fs-sm" for="November">November</label>
+                            </div>
+                            <div class="form-check">
+                              <input type="checkbox" name="month_filter" class="form-check-input" id="December"
+                                value="12">
+                              <label class="form-check-label fs-sm" for="December">December</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="filters">
+                      <div class="filter-group">
+                        <div class="row">
+                          <label class="col-md-3 form-label fs-sm fw-bold text-muted">Days of the Month: </label>
+                          <div class="col-md-9 ">
+                            <div class="form-check">
+                              <input type="checkbox" name="days_of_month_filter_all" class="form-check-input"
+                                id="days_of_month_filter_all">
+                              <label class="form-check-label fs-sm" for="days_of_month_filter_all">Select All</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3 row">
+                          <!-- Add the 'mb-3' class for margin-bottom -->
+                          <div class="col-md-12">
+
+                            {% for i in days_of_month %}
+                            {% if i == 1 %}
+                            <div class="form-check">
+                              <input type="checkbox" name="days_of_month_filter" class="form-check-input" id="{{i}}st"
+                                value="{{i}}">
+                              <label class="form-check-label fs-sm" for="{{i}}st">{{i}}st</label>
+                            </div>
+
+                            {% elif i == 2 %}
+                            <div class="form-check">
+                              <input type="checkbox" name="days_of_month_filter" class="form-check-input" id="{{i}}nd"
+                                value="{{i}}">
+                              <label class="form-check-label fs-sm" for="{{i}}nd">{{i}}nd</label>
+                            </div>
+
+                            {% elif i == 3 %}
+                            <div class="form-check">
+                              <input type="checkbox" name="days_of_month_filter" class="form-check-input" id="{{i}}rd"
+                                value="{{i}}">
+                              <label class="form-check-label fs-sm" for="{{i}}rd">{{i}}rd</label>
+                            </div>
+
+                            {% else %}
+                            <div class="form-check">
+                              <input type="checkbox" name="days_of_month_filter" class="form-check-input" id="{{i}}th"
+                                value="{{i}}">
+                              <label class="form-check-label fs-sm" for="{{i}}th">{{i}}th</label>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="filters">
+                      <div class="filter-group">
+                        <div class="row">
+                          <label class="col-md-3 form-label fs-sm fw-bold text-muted">Days of the Week: </label>
+                          <div class="col-md-9 ">
+                            <div class="form-check">
+                              <input type="checkbox" name="days_of_week_filter_all" class="form-check-input"
+                                id="days_of_week_filter_all">
+                              <label class="form-check-label fs-sm" for="days_of_week_filter_all">Select All</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3 row">
+                          <!-- Add the 'mb-3' class for margin-bottom -->
+                          <div class="col-md-12">
+
+                            {% for i in days_of_week %}
+                            <div class="form-check">
+                              <input type="checkbox" name="days_of_week_filter" class="form-check-input" id="{{i}}"
+                                value="{{ forloop.counter0 }}">
+                              <label class="form-check-label fs-sm fw-bold text-muted" for="{{i}}">{{i}}</label>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="filter-group">
+                      <label class="form-label fs-sm fw-bold text-muted mb-2"> Hour Range:00:00 to 23:59</label>
+                      <div class="mb-3">
+                        <!-- Add the 'mb-3' class for margin-bottom -->
+                        <div class="js-rangeslider2" style="width: 100%; color: blue;" id="hour-slider-range"></div>
+                        <p>
+                          <input type="text" id="hour-range-label" class="form-label mt-2"
+                            style="border: 0;color: rgb(7, 127, 240);font-weight: bold;float: left;font-size: 10px;"
+                            size="60" />
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-2 py-0">
+                <!-- Metric Chart Type Selection -->
+                <div class="metric-chart-type">
+                  <label for="chart-type" class="form-label fs-sm fw-bold text-muted">Chart Type:</label>
+                  <select id="chart-type" class="form-select mb-3">
+                    <option selected value="">Select chart type</option>
+                    <option value="line">Line Chart</option>
+                    <option value="column">Column Chart</option>
+                    <option value="histogram">Histogram Chart</option>
+                    <!-- Add more chart types as needed -->
+                  </select>
+                </div>
+
+                <!-- Add the checkboxes for series display -->
+                <div class="series-checkboxes">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="series1">
+                    <label class="form-check-label fs-sm" for="series1">Series 1</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input fs-sm" id="all-series">
+                    <label class="form-check-label" for="all-series">All Series in One Chart</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-1 py-3">
+                Help
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END Hero -->
+
+      <!-- Page Content -->
+      <div class="content py-0">
+        <div class="block-content block-content-full border-bottom">
+          <div class="row push-item">
+            <div class="col-md-3">
+              <!-- Aggregation Time Interval Dropdown -->
+              <div class="aggregation-dropdown">
+                <label class="form-label fs-sm fw-bold text-muted">Aggregation Time Interval:</label>
+                <select id="aggregation-interval" class="form-select">
+                  <option selected value="0">Select aggregation interval</option>
+                  <option value="1">1 minute</option>
+                  <option value="5">5 minutes</option>
+                  <option value="15">15 minutes</option>
+                  <option value="30">30 minutes</option>
+                  <option value="60">60 minutes</option>
+                  <!-- Add more interval options as needed -->
+                </select>
+              </div>
+
+              <!-- Grouping Criteria Dropdown -->
+              <div class="grouping-dropdown">
+                <label class="form-label fs-sm fw-bold text-muted">Group by:</label>
+                <select id="grouping-criteria" class="form-select">
+                  <option selected value="">Select group</option>
+                  <option value="HH.MM">HH:MM Day of the Week</option>
+                  <option value="day_of_month,HH.MM">Day of Month,HH:MM</option>
+                  <option value="month_of_year,HH.MM">Month of Year,HH:MM</option>
+                  <option value="year,HH.MM">Year, HH:MM</option>
+                  <option value="day_of_week,day">Days of the Week,Day</option>
+                  <option value="day_of_month,day">Days of Month,Day</option>
+                  <option value="month_of_year,day">Month of Year,Day</option>
+                  <option value="day,HH">Day, Hours</option>
+                  <option value="day,day">Day, Day</option>
+                </select>
+              </div>
+
+              <!-- Units Dropdown -->
+              <div class="units-dropdown">
+                <label class="form-label fs-sm fw-bold text-muted">Units:</label>
+                <select id="units" class="form-select">
+                  <option selected value="">Select units</option>
+                  <option value="unit1">Unit 1</option>
+                  <option value="unit2">Unit 2</option>
+                  <option value="unit3">Unit 3</option>
+                  <!-- Add more unit options as needed -->
+                </select>
+              </div>
+              <div class="statistics">
+                <label for="statistic-selector" class="form-label fs-sm fw-bold text-muted">Select a Statistic:</label>
+                <select id="statistic-selector" class="form-select mb-2">
+                  <option selected value="">Select statistics</option>
+                  <option value="mean">Mean</option>
+                  <option value="median">Median</option>
+                  <option value="std_deviation">Standard Deviation</option>
+                  <option value="sum">Sum</option>
+                  <option value="count">Count</option>
+                  <!-- Add more statistics options here if needed -->
+                </select>
+              </div>
+
+              <div class="metrics">
+                <label for="metric-selector" class="form-label fs-sm fw-bold text-muted">Select a Metric:</label>
+                <select id="metric-selector" class="form-select mb-3">
+                  <option selected value="">Select metric</option>
+                  <option value="close_close_minus_1">Close - Close (-1)</option>
+                  <option value="close_open_diff">Close - Open</option>
+                  <option value="high_low_diff">High - Low</option>
+                  <option value="high_count">High Count</option>
+                  <option value="low_count">Low Count</option>
+                  <option value="high_low_sum">High + Low</option>
+                  <!-- Add more metrics options here if needed -->
+                </select>
+              </div>
+
+              <button id="run-statistics" class="btn btn-primary">Run Statistics</button>
+            </div>
+            <div class="col-md-9">
+              <div class="top-section" style="height: 10%;">
+                <!-- Add a checkbox for displaying chart time as "Europe/Rome" time -->
+                <div class="chart-time" style="padding-top: -175px;">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="europe-rome-time">
+                    <label class="form-check-label" for="europe-rome-time">Europe/Rome Time</label>
+                  </div>
+                </div>
+              </div>
+              <hr class="separator-line" />
+
+              <div class="bottom-section" style="height: 90%;">
+                <!-- Bottom Section Content -->
+                <!-- Chart goes here -->
+                <div class="chart" id="selected-chart"></div>
+                <div id="info-div"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END Page Content -->
+    </main>
+    <!-- END Main Container -->
+
+    <!-- Footer -->
+    <footer id="page-footer" class="bg-body-extra-light">
+      <div class="content py-0">
+        <div class="row fs-sm">
+          <div class="col-sm-6 order-sm-2 mb-1 mb-sm-0 text-center text-sm-end">
+          </div>
+          <div class="col-sm-6 order-sm-1 text-center text-sm-start">
+            <a class="fw-semibold" href="" target="_blank">Bias App</a> &copy; <span data-toggle="year-copy"></span>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- END Footer -->
+  </div>
+  <!-- END Page Container -->
+  <!--
+      Bias App JS
+
+      Core libraries and functionality
+      webpack is putting everything together at assets/_js/main/app.js
+    -->
+  <script src="{% static 'js/dashmix.app.min.js' %}"></script>
+  <!-- Include Bootstrap and jQuery JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include Highcharts library -->
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/stock.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+  <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+  <!-- Include Highstock library -->
+  <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/histogram-bellcurve.js"></script>
+  <!-- Page JS Plugins -->
+  <script src="{% static 'js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+  <script src="{% static 'js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js' %}"></script>
+  <script src="{% static 'js/plugins/select2/js/select2.full.min.js' %}"></script>
+  <script src="{% static 'js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js' %}"></script>
+  <script src="{% static 'js/plugins/jquery.maskedinput/jquery.maskedinput.min.js' %}"></script>
+  <script src="{% static 'js/plugins/dropzone/min/dropzone.min.js' %}"></script>
+  <script src="{% static 'js/plugins/pwstrength-bootstrap/pwstrength-bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/plugins/flatpickr/flatpickr.min.js' %}"></script>
+  <!-- Page JS Helpers (Flatpickr + BS Datepicker + BS Maxlength + Select2 + Ion Range Slider + Masked Inputs + Password Strength Meter plugins) -->
+  <script>Dashmix.helpersOnLoad(['js-flatpickr', 'jq-datepicker', 'jq-maxlength', 'jq-select2', 'jq-rangeslider', 'jq-masked-inputs', 'jq-pw-strength']);</script>
+  <script src="{% static 'instrument_detail.js' %}"></script>
+</body>
+
+</html>

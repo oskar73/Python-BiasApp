@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Candlestick Chart with Aggregation</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+    <div id="container" style="height: 400px; width: 100%;"></div>
+    <label for="aggregation-select">Select Aggregation Interval:</label>
+    <select id="aggregation-select">
+        <option value="1">1 Minute</option>
+        <option value="3">3 Minutes</option>
+        <option value="5">5 Minutes</option>
+        <option value="10">10 Minutes</option>
+        <option value="15">15 Minutes</option>
+        <option value="30">30 Minutes</option>
+        <option value="60">60 Minutes</option>
+    </select>
+
+    <script src="chart.js"></script>
+</body>
+</html>

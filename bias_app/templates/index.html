@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Financial Bias Analysis</title>
+</head>
+<body>
+    <h1>Financial Instruments</h1>
+    <ul>
+        {% for instrument in instruments %}
+            <li><a href="{% url 'instrument_detail' instrument.id %}">{{ instrument.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

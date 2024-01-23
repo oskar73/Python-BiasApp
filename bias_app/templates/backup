@@ -1,0 +1,296 @@
+{% block content %}
+<div class="container">
+  <div class="left-column">
+    <h1>{{ instrument.name }} - Instrument Detail</h1>
+
+    <div class="data-visualization">
+      <h2>Data Visualization</h2>
+      <label for="chart-type">Select Chart Type:</label>
+      <select id="chart-type">
+        <option value="line">Line Chart</option>
+        <option value="column-range">Column Range Chart</option>
+        <option value="area-spline-range">AreaSplineRange Chart</option>
+      </select>
+      <button id="run-statistics">Run Statistics</button>
+    </div>
+
+    <div class="statistics">
+      <h2>Statistics</h2>
+      <p>Calculated Volume: {{ calculated_volume }}</p>
+      <p>Calculated Mean: {{ calculated_mean }}</p>
+      <p>Calculated Median: {{ calculated_median }}</p>
+    </div>
+
+    <div class="filters">
+      <h3>Filters</h3>
+      <div class="filter-group">
+        <label>Months:</label>
+        <input type="checkbox" class="month_filter" value="1"> January
+        <input type="checkbox" class="month_filter" value="2"> February
+        <!-- Add checkboxes for the rest of the months -->
+      </div>
+      <div class="filter-group">
+        <label>Years:</label>
+        <select id="selected-year">
+          <option value="">All</option>
+          <option value="2000">2000</option>
+          <option value="2001">2001</option>
+          <!-- Add options for the rest of the years up to 2020 -->
+        </select>
+      </div>
+      <!-- Add similar filter groups for days, hours, and minutes -->
+      <div class="filter-group">
+        <label>Days:</label>
+        <select id="selected-day">
+          <option value="">All</option>
+          <!-- Add options for days -->
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Hours:</label>
+        <select id="selected-hour">
+          <option value="">All</option>
+          <!-- Add options for hours -->
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Minutes:</label>
+        <select id="selected-minute">
+          <option value="">All</option>
+          <!-- Add options for minutes -->
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="right-column">
+    <!-- Chart goes here -->
+    <div class="chart" id="selected-chart"></div>
+  </div>
+</div>
+
+<!-- Include TradingView Lightweight Charts script (adjust the URL accordingly) -->
+<script src="https://unpkg.com/lightweight-charts@latest/dist/lightweight-charts.standalone.production.js"></script>
+
+<script>
+  // JavaScript code goes here
+ 
+    var traces = {{ traces | safe }};
+    var selectedMonths = [];
+    var selectedYears = [];
+    var selectedDays = [];
+    var selectedHours = [];
+    var selectedMinutes = [];
+    var chart = null; 
+
+  
+      // Function to generate a Line chart
+    function generateLineChart() {
+      var selectedChartContainer = document.getElementById('selected-chart');
+      selectedChartContainer.innerHTML = '';
+
+      var filteredTraces = filterTracesBySelection();
+      //chart = LightweightCharts.createChart(selectedChartContainer, { width: '100%', height: '100%' });
+      chart = LightweightCharts.createChart(selectedChartContainer, { width: 685, height: 500  });
+      
+      var lineSeries = chart.addLineSeries();
+
+      var tradingViewData = filteredTraces.map(function(trace) {
+        return {
+          time: new Date(trace.x).getTime() / 1000, // Convert to seconds
+          value: trace.y,
+        };
+      });
+
+      lineSeries.setData(tradingViewData);
+
+      // Add a click event handler to show information when clicking on a data point
+      chart.subscribeCrosshairMove(function(param) {
+        if (param.time && param.seriesPrices) {
+          var infoDiv = document.getElementById('info-div');
+          infoDiv.innerHTML = `Time: ${new Date(param.time * 1000).toLocaleString()}<br>Value: ${param.seriesPrices.value}`;
+        }
+      });
+    }
+
+   
+
+  // Function to generate a Column Range chart
+  function generateColumnRangeChart() {
+    var selectedChartContainer = document.getElementById('selected-chart');
+    selectedChartContainer.innerHTML = '';
+
+    var filteredTraces = filterTracesBySelection();
+
+    chart = LightweightCharts.createChart(selectedChartContainer, { width: 685, height: 400 });
+    var columnRangeSeries = chart.addHistogramSeries({
+      priceFormat: {
+        type: 'volume',
+      },
+    });
+
+    var tradingViewData = filteredTraces.map(function(trace) {
+      return {
+        time: new Date(trace.x).getTime() / 1000, // Convert to seconds
+        value: trace.volume,
+      };
+    });
+
+    columnRangeSeries.setData(tradingViewData);
+  }
+
+  // Function to generate an AreaSplineRange chart
+  function generateAreaSplineRangeChart() {
+    var selectedChartContainer = document.getElementById('selected-chart');
+    selectedChartContainer.innerHTML = '';
+
+    var filteredTraces = filterTracesBySelection();
+
+    chart = LightweightCharts.createChart(selectedChartContainer, { width: 685, height: 500 });
+    var areaSplineRangeSeries = chart.addAreaSeries({
+      topColor: 'rgba(38, 198, 218, 0.56)',
+      bottomColor: 'rgba(38, 198, 218, 0.04)',
+      lineColor: 'rgba(38, 198, 218, 1)',
+      lineWidth: 2,
+    });
+
+    var data = filteredTraces.map(function(trace) {
+      return {
+        time: new Date(trace.x).getTime() / 1000, // Convert to seconds
+        value: trace.y,
+        low: trace.low_price,
+        high: trace.high_price,
+      };
+    });
+
+    areaSplineRangeSeries.setData(data);
+  }
+
+  function generateCandlestickChart() {
+    var selectedChartContainer = document.getElementById('selected-chart');
+    selectedChartContainer.innerHTML = '';
+
+    var filteredTraces = filterTracesBySelection();
+
+    chart = LightweightCharts.createChart(selectedChartContainer, { width: 685, height: 500 });
+    var candlestickSeries = chart.addCandlestickSeries();
+
+    var tradingViewData = filteredTraces.map(function(trace) {
+      return {
+        time: new Date(trace.x).getTime() / 1000, // Convert to seconds
+        open: trace.opening_price,
+        high: trace.high_price,
+        low: trace.low_price,
+        close: trace.y,
+      };
+    });
+
+    candlestickSeries.setData(tradingViewData);
+  }
+
+
+  // Function to run statistics
+  function runStatistics() {
+    // Calculate and display statistics based on 'traces' data
+  }
+
+  // Filter traces based on selected months and years
+  function filterTracesBySelection() {
+    return traces.filter(function(trace) {
+      var month = new Date(trace.x).getMonth() + 1; // Adding 1 to adjust to 1-based indexing
+      var year = new Date(trace.x).getFullYear();
+      return (selectedMonths.length === 0 || selectedMonths.includes(month)) &&
+             (selectedYears.length === 0 || selectedYears.includes(year));
+    });
+  }
+
+  // Listen for changes in the chart type dropdown
+  var chartTypeSelector = document.getElementById('chart-type');
+  chartTypeSelector.addEventListener('change', function() {
+    var selectedChartType = chartTypeSelector.value;
+    if (selectedChartType === 'candlestick') {
+      generateCandlestickChart();
+    } else if (selectedChartType === 'column-range') {
+      generateColumnRangeChart();
+    } else if (selectedChartType === 'area-spline-range') {
+      generateAreaSplineRangeChart();
+    }
+  });
+
+  // Listen for the "Run Statistics" button click
+  var runStatisticsButton = document.getElementById('run-statistics');
+  runStatisticsButton.addEventListener('click', runStatistics);
+
+  // Listen for changes in month checkboxes
+  var monthFilters = document.querySelectorAll('.month_filter');
+  monthFilters.forEach(function(filter) {
+    filter.addEventListener('change', function() {
+      selectedMonths = Array.from(monthFilters)
+        .filter(function(filter) { return filter.checked; })
+        .map(function(filter) { return parseInt(filter.value); });
+      generateChart(chartTypeSelector.value);
+    });
+  });
+
+  // Listen for changes in year checkboxes
+  var yearFilters = document.querySelectorAll('.year-filter');
+  yearFilters.forEach(function(filter) {
+    filter.addEventListener('change', function() {
+      selectedYears = Array.from(yearFilters)
+        .filter(function(filter) { return filter.checked; })
+        .map(function(filter) { return parseInt(filter.value); });
+      generateChart(chartTypeSelector.value);
+    });
+  });
+
+  // Initialize the chart and filters with the default selected chart type
+  var initialChartType = chartTypeSelector.value;
+  //generateCandlestickChart();
+  generateLineChart(); // Default to Candlestick Chart
+</script>
+
+<!-- Embed TradingView Widget -->
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_chart_container",
+    "width": 900,
+    "height": 500,
+    "symbol": "{{ instrument.symbol }}",
+    "interval": "D",
+    "timezone": "Etc/UTC",
+    "theme": "light",
+    "style": "1",
+    "locale": "en",
+    "toolbar_bg": "#f1f3f6",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "save_image": false,
+    "container_id": "tradingview-widget-container"
+  });
+</script>
+
+<style>
+  /* Add CSS styles for the layout here */
+  .container {
+    display: flex;
+    width: 100%;
+  }
+
+  .left-column {
+    flex: 0.40; /* Adjust the flex value as needed */
+    padding: 20px;
+  }
+
+  .right-column {
+    flex: 1; /* Adjust the flex value as needed */
+    padding: 20px;
+    /*overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  }
+
+  .chart {
+    width: 100%;
+    height: 100%; /* Adjust the height as needed */
+  }
+</style>
+
+{% endblock %}

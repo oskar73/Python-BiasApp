@@ -1,0 +1,222 @@
+#page-container>#main-container .content,
+#page-container>#page-footer .content,
+#page-container>#page-header .content,
+#page-container>#page-header .content-header {
+	max-width: 1920px !important;
+}
+
+.instument_detail .block-content .items-push>div {
+	margin-bottom: 0px !important;
+}
+
+
+.instument_detail .form-check-input[type=checkbox] {
+	border-radius: 0;
+}
+
+
+.instument_detail .form-check-label {
+	font-size: 11px;
+	margin-left: -5px;
+	cursor: pointer;
+}
+
+.filter-group .form-label {
+	text-align: left;
+}
+
+.form-check-input {
+	border: 1px solid #818181 !important;
+}
+
+.form-check {
+	display: inline-block;
+	margin-right: 5px;
+	margin-bottom: 0;
+	line-height: 17px;
+	text-align: left;
+	float: left;
+}
+
+
+.form-select {
+	display: block;
+	width: 100%;
+	padding: 0.075rem 2.25rem 0.075rem 0.75rem;
+	-moz-padding-start: calc(.75rem - 3px);
+	font-size: 13px;
+}
+
+.left-column,
+.right-column {
+	padding: 10px;
+	font-size: 14px;
+}
+
+.data-visualization,
+.statistics,
+.filters {
+	margin-bottom: 10px;
+}
+
+.filter-group {
+	margin-bottom: 10px;
+}
+
+/* Minimize left column's screen occupation */
+.left-column {
+	flex: 1;
+	max-width: 300px;
+}
+
+/* Style the track and thumb of the range slider */
+.hour-range-filter {
+	-webkit-appearance: none;
+	width: 100%;
+	height: 5px;
+	background: #d3d3d3;
+	/* Gray track */
+	outline: none;
+}
+
+.hour-range-filter::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	background: #4caf50;
+	/* Green thumb */
+	cursor: pointer;
+	border-radius: 50%;
+}
+
+/* Style the selected range display */
+#selected-hours-range {
+	margin-top: 5px;
+	text-align: center;
+}
+
+/* Add CSS styles for the layout here */
+.container {
+	display: flex;
+	width: 100%;
+}
+
+.left-column {
+	flex: 0.24;
+	/* Adjust the flex value as needed */
+	padding: 10px;
+	border-right: 1px solid #ccc;
+	max-height: 600;
+	font-size: 12px;
+}
+
+
+.right-column {
+	flex: 0.86;
+	display: flex;
+	/* Add this to enable nested flex layout */
+	flex-direction: column;
+	/* Create a column layout for the right column */
+	padding: 10px;
+	font-size: 12px;
+}
+
+.chart {
+	flex: 1;
+	/* The chart takes up all available space in the right column */
+	width: 100%;
+	height: 100%;
+	/* Adjust the height as needed */
+}
+
+/* Add styles for the top section */
+.top-section {
+	flex: 0.2;
+	/* Adjust the flex value for the top section */
+
+	/*background-color: lightgray; /* Add your background color */
+
+}
+
+.grouping-dropdown,
+.aggregation-dropdown,
+.metric-chart-type,
+.units-dropdown {
+	/* Add spacing between elements */
+}
+
+
+/* Add styles for the bottom section */
+.bottom-section {
+	flex: 0.8;
+	/* Adjust the flex value for the bottom section */
+	/*overflow: auto; /* Add overflow for scrolling if content overflows */
+}
+
+/* Adjust the styles as needed */
+/* Style the series display checkboxes */
+.series-checkboxes {
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	/* Add some spacing above the checkboxes */
+}
+
+/* Style the chart time display */
+.chart-time {
+	margin-top: 10px;
+	/* Add spacing above the chart time */
+	font-weight: bold;
+}
+
+/* Style for the font size within the dropdowns */
+.form-select,
+.form-check-label,
+.input-group-text {
+	/* You can adjust the size as needed */
+}
+
+/* Style for the labels within the dropdowns */
+.form-label {
+
+	/* You can adjust the size as needed */
+}
+
+/* Style for the labels above the dropdowns */
+.filter-group .form-label {
+
+	/* You can adjust the size as needed */
+}
+
+/* Style for the button */
+#run-statistics {
+
+	/* You can adjust the size as needed */
+}
+
+/* Style for the checkboxes and their labels */
+.form-check-input {
+	width: 11px;
+	/* You can adjust the size as needed */
+	height: 11px;
+	/* You can adjust the size as needed */
+}
+
+.form-check-label {
+	font-size: 11px;
+	/* You can adjust the size as needed */
+}
+
+#loading_splash {
+	position: fixed;
+	left:0;
+	top: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	width: calc(100vw);
+	height: calc(100vh);
+	color: white;
+	z-index: 9999;
+	padding-top: calc(45vh);
+	
+}

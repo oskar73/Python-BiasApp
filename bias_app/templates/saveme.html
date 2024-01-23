@@ -1,0 +1,792 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Highcharts Stock Chart Example</title>
+  <!-- Include Bootstrap CSS -->
+  <!-- Include Highstock library -->
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+
+  <!-- Include Bootstrap and jQuery JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+  <!-- Include Highcharts library -->
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/stock.js"></script>
+  <!-- Custom CSS -->
+  <style>
+    /* Custom styling for better organization */
+    .left-column, .right-column {
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .data-visualization, .statistics, .filters {
+      margin-bottom: 10px;
+    }
+
+    .filter-group {
+      margin-bottom: 10px;
+    }
+
+    /* Minimize left column's screen occupation */
+    .left-column {
+      flex: 1;
+      max-width: 300px;
+    }
+
+    /* Style the track and thumb of the range slider */
+    .hour-range-filter {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 5px;
+      background: #d3d3d3; /* Gray track */
+      outline: none;
+    }
+
+    .hour-range-filter::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #4caf50; /* Green thumb */
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+    /* Style the selected range display */
+    #selected-hours-range {
+      margin-top: 5px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4 left-column">
+        <div class="data-visualization">
+          <label for="chart-type" class="form-label">Chart Type:</label>
+          <select id="chart-type" class="form-select mb-3">
+            <option value="line">Line Chart</option>
+            <option value="area">Area Chart</option>
+            <option value="column">Column Chart</option>
+            <!-- Add more chart types as needed -->
+          </select>
+        </div>
+
+        <div class="statistics">
+          <label for="statistic-selector" class="form-label">Select a Statistic:</label>
+          <select id="statistic-selector" class="form-select mb-3">
+            <option value="volume">Volume</option>
+            <option value="mean">Mean</option>
+            <option value="median">Median</option>
+            <option value="std_deviation">Standard Deviation</option>
+            <option value="variance">Variance</option>
+            <option value="price_range">Price Range</option>
+            <!-- Add more statistics options here if needed -->
+          </select>
+        </div>
+
+        <div class="metrics">
+          <label for="metric-selector" class="form-label">Select a Metric:</label>
+          <select id="metric-selector" class="form-select mb-3">
+            <option value="close_close_minus_1">Close - Close (-1)</option>
+            <option value="close_open_diff">Close - Open</option>
+            <option value="high_low_diff">High - Low</option>
+            <option value="high_count">High Count</option>
+            <option value="low_count">Low Count</option>
+            <option value="high_low_sum">High + Low</option>
+            <!-- Add more metrics options here if needed -->
+          </select>
+        </div>
+
+        <div class="filters">
+          <div class="filter-group">
+            <label class="form-label">Months:</label>
+            <div class="mb-3"> <!-- Add the 'mb-3' class for margin-bottom -->
+              <select class="form-select month_filter">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+                <!-- Add options for the rest of the months -->
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label class="form-label">Years:</label>
+            <div class="input-group">
+              <input type="range" class="form-range year-filter" min="2000" max="2020" step="1" value="2000">
+              <span class="input-group-text" id="selected-year">2000</span>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label class="form-label">Days of the Week:</label>
+            <div class="mb-3"> <!-- Add the 'mb-3' class for margin-bottom -->
+              <select class="form-select day-filter">
+                <option value="0">Sunday</option>
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+                <!-- Add options for the rest of the days -->
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label class="form-label">Hours:</label>
+            <div>
+              <input type="range" class="hour-range-filter" min="0" max="23" step="1" value="0" />
+              <span id="selected-hours-range">0 - 23</span>
+            </div>
+          </div>
+        </div>
+        <button id="run-statistics" class="btn btn-primary">Run Statistics</button>
+      </div>
+
+      <div class="col-md-8 right-column">
+        <div class="top-section" style="height: 10%;">
+          <!-- Metric Chart Type Selection -->
+          <div class="metric-chart-type">
+            <label class="form-label">Metric Chart Type:</label>
+            <select id="metric-chart-type" class="form-select">
+              <option value="line">Line Chart</option>
+              <option value="column">Column Chart</option>
+              <option value="column3d">3D Column Chart</option>
+            </select>
+          </div>
+          <div class="top-section" style="height: 10%;">
+          <!-- Aggregation Time Interval Dropdown -->
+          <div class="aggregation-dropdown">
+          <label class="form-label">Aggregation Time Interval:</label>
+          <select id="aggregation-interval" class="form-select">
+          <option value="1">1 minute</option>
+          <option value="5">5 minutes</option>
+          <option value="15">15 minutes</option>
+          <option value="30">30 minutes</option>
+          <option value="60">60 minutes</option>
+          <!-- Add more interval options as needed -->
+          </select>
+          </div>
+
+          <!-- Grouping Criteria Dropdown -->
+          <div class="grouping-dropdown">
+            <label class="form-label">Group by:</label>
+            <select id="grouping-criteria" class="form-select">
+            <option value="HH.MM">HH:MM Day of the Week</option>
+            <option value="day_of_month,HH.MM">Day of Month,HH:MM</option>
+            <option value="month_of_year,HH.MM">Month of Year,HH:MM</option>
+            <option value="year,HH.MM">Year, HH:MM</option>
+            <option value="day_of_week,day">Days of the Week,Day</option>
+            <option value="day_of_month,day">Days of Month,Day</option>
+            <option value="month_of_year,day">Month of Year,Day</option>
+            <option value="day,HH">Day, Hours</option>
+            <option value="day,day">Day, Day</option>
+            </select>
+          </div>
+
+        <!-- Units Dropdown -->
+        <div class="units-dropdown">
+          <label class="form-label">Units:</label>
+          <select id="units" class="form-select">
+          <option value="unit1">Unit 1</option>
+          <option value="unit2">Unit 2</option>
+          <option value="unit3">Unit 3</option>
+          <!-- Add more unit options as needed -->
+          </select>
+        </div>
+
+        </div>
+        <!-- Add the checkboxes for series display -->
+        <div class="series-checkboxes">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="series1">
+            <label class="form-check-label" for="series1">Series 1</label>
+          </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="all-series">
+          <label class="form-check-label" for="all-series">All Series in One Chart</label>
+        </div>
+      </div>
+
+        <!-- Add a checkbox for displaying chart time as "Europe/Rome" time -->
+        <div class="chart-time">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="europe-rome-time">
+          <label class="form-check-label" for="europe-rome-time">Europe/Rome Time</label>
+          </div>
+        </div>
+      </div>
+
+        <div class="bottom-section" style="height: 90%;">
+          <!-- Bottom Section Content -->
+          <!-- Chart goes here -->
+          <div class="chart" id="selected-chart"></div>
+          <div class="chart " id="metric-chart-container"></div>
+          <!-- Information display -->
+          <div id="info-div"></div>
+          <!-- Metric Line Chart Container -->
+          <div class="chart" id="line-chart"></div>
+
+          <!-- Metric Column Chart Container -->
+          <div class="chart" id="column-chart"></div>
+
+          <!-- Metric 3D Column Chart Container -->
+          <div class="chart" id="column3d-chart"></div>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    // JavaScript code goes here
+    var traces = {{ traces | safe }};
+    var selectedMonths = [];
+    var selectedYear = 2005; // Default selected year
+    var selectedDays = [];
+    var selectedHours = [];
+    var selectedMinutes = [];
+    var selectedSeconds = [];
+    var chart = null; // Store the chart instance
+
+    // Function to generate a Highcharts Line chart
+    // Function to generate a Highcharts Line chart with stock tools
+  function generateHighchartsLineChart() {
+    var selectedChartContainer = document.getElementById('selected-chart');
+    selectedChartContainer.innerHTML = '';
+
+    var filteredTraces = filterTracesBySelection();
+
+    chart = new Highcharts.stockChart(selectedChartContainer, {
+      chart: {
+        type: 'line',
+      },
+      title: {
+        text: 'Line Chart',
+      },
+      xAxis: {
+        type: 'datetime',
+      },
+      yAxis: {
+        title: {
+          text: 'Y-Axis Title',
+        },
+      },
+      series: [{
+        name: 'Series Name',
+        data: filteredTraces.map(function(trace) {
+          return [
+            new Date(trace.x).getTime(), // Convert to milliseconds
+            trace.mean_close_close_minus_1,
+          ];
+        }),
+      }],
+    // Add Highcharts stock tools (range selector, navigation buttons, etc.)
+    rangeSelector: {
+      enabled: true, // Enable the range selector
+    },
+    navigator: {
+      enabled: true, // Enable the navigator for zooming
+    },
+    scrollbar: {
+      enabled: true, // Enable the scrollbar for scrolling
+    },
+    legend: {
+      enabled: true, // Enable the legend
+    },
+  });
+}
+
+
+    /*
+    // Function to generate a Highcharts Column chart with minute-level granularity
+    function generateHighchartsColumnChart() {
+      var selectedChartContainer = document.getElementById('selected-chart');
+      selectedChartContainer.innerHTML = '';
+
+      var filteredTraces = filterTracesBySelection();
+
+      chart = new Highcharts.stockChart(selectedChartContainer, {
+        title: {
+          text: 'Column Chart',
+        },
+        xAxis: {
+          type: 'datetime',
+        },
+        yAxis: {
+          title: {
+            text: 'Y-Axis Title',
+          },
+        },
+        series: [{
+          name: 'Series Name',
+          type: 'column',
+          pointInterval: 60 * 1000, // 1 minute in milliseconds
+          pointStart: filteredTraces[0].x, // Use the earliest time as the starting point
+          data: filteredTraces.map(function(trace) {
+            return trace.close_close_minus_1; // Use the value directly for the column height
+          }),
+        }],
+      });
+    }
+    // Function to generate a Highcharts metric chart
+    function generateMetricChart() {
+    var selectedChartContainer = document.getElementById('selected-chart');
+    selectedChartContainer.innerHTML = '';
+
+    var filteredTraces = filterTracesBySelection();
+    var selectedMetric = document.getElementById('metric-selector').value; // Get the selected metric from the dropdown
+
+    // Extract data from filteredTraces for the selected metric
+    var chartData = filteredTraces.map(function(trace) {
+    return [
+      new Date(trace.x).getTime(), // Convert to milliseconds
+      trace[selectedMetric], // Use the selected metric's data directly based on the dropdown selection
+    ];
+    });
+
+    // Customize the chart here
+    var metricChartContainer = document.getElementById('selected-chart');
+    metricChartContainer.innerHTML = '';
+
+    var chart = new Highcharts.stockChart(metricChartContainer, {
+      title: {
+        text: selectedMetric + ' Chart', // Use the selected metric name in the chart title
+      },
+      xAxis: {
+      type: 'datetime',
+      },
+      yAxis: {
+        title: {
+        text: 'Y-Axis Title',
+        },
+      },
+      series: [{
+        name: selectedMetric, // Use the selected metric name as the series name
+        type: 'line', // Change the chart type if needed
+        data: chartData, // Use the extracted data for the chart
+      }],
+    });
+    }
+
+    // Listen for changes in the metric selector dropdown
+    var metricSelector = document.getElementById('metric-selector');
+    metricSelector.addEventListener('change', generateMetricChart); // Call the function when the dropdown selection changes
+
+
+    // Function to run statistics
+    function runStatistics() {
+      // Calculate and display statistics based on 'traces' data
+    }
+    */
+    // Filter traces based on selected months, year, days, hours, minutes, and seconds
+    function filterTracesBySelection() {
+      return traces.filter(function(trace) {
+        var date = new Date(trace.x);
+        var month = date.getMonth() + 1; // Adding 1 to adjust to 1-based indexing
+        var year = date.getFullYear();
+        var dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday;
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        var metricSelected = document.getElementById('metric-selector').value; // Get the selected metric
+
+
+        return (selectedMonths.length === 0 || selectedMonths.includes(month)) &&
+          (year === selectedYear) &&
+          (selectedDays.length === 0 || selectedDays.includes(dayOfWeek)) &&
+          (selectedHours.length === 0 || selectedHours.includes(hour)) &&
+          (selectedMinutes.length === 0 || selectedMinutes.includes(minute)) &&
+          (selectedSeconds.length === 0 || selectedSeconds.includes(second));
+          (metricSelected === 'all' || trace[metricSelected] !== undefined); // Add the metric filter
+      });
+    }
+    /*
+    // Listen for changes in the chart type dropdown
+    var chartTypeSelector = document.getElementById('chart-type');
+    chartTypeSelector.addEventListener('change', function() {
+      var selectedChartType = chartTypeSelector.value;
+      if (selectedChartType === 'line') {
+        generateHighchartsLineChart();
+      } else if (selectedChartType === 'area') {
+        generateHighchartsAreaChart();
+      } else if (selectedChartType === 'column') {
+        generateHighchartsColumnChart();
+      }
+    });
+
+    // Listen for the "Run Statistics" button click
+    var runStatisticsButton = document.getElementById('run-statistics');
+    runStatisticsButton.addEventListener('click', runStatistics);
+    */
+    // Listen for changes in month checkboxes
+    var monthFilters = document.querySelectorAll('.month_filter');
+    monthFilters.forEach(function(filter) {
+      filter.addEventListener('change', function() {
+        selectedMonths = Array.from(monthFilters)
+          .filter(function(filter) { return filter.checked; })
+          .map(function(filter) { return parseInt(filter.value); });
+        chart.redraw(); // Update the chart
+      });
+    });
+
+    // Listen for changes in year slider
+    var yearFilter = document.querySelector('.year-filter');
+    yearFilter.addEventListener('input', function() {
+      selectedYear = parseInt(yearFilter.value);
+      document.getElementById('selected-year').textContent = selectedYear;
+      chart.redraw(); // Update the chart
+    });
+
+    // Listen for changes in day checkboxes
+    var dayFilters = document.querySelectorAll('.day-filter');
+    dayFilters.forEach(function(filter) {
+      filter.addEventListener('change', function() {
+        selectedDays = Array.from(dayFilters)
+          .filter(function(filter) { return filter.checked; })
+          .map(function(filter) { return parseInt(filter.value); });
+        chart.redraw(); // Update the chart
+      });
+    });
+
+    // Listen for changes in hour checkboxes
+    var hourFilters = document.querySelectorAll('.hour-filter');
+    hourFilters.forEach(function(filter) {
+      filter.addEventListener('change', function() {
+        selectedHours = Array.from(hourFilters)
+          .filter(function(filter) { return filter.checked; })
+          .map(function(filter) { return parseInt(filter.value); });
+        chart.redraw(); // Update the chart
+      });
+    });
+
+    // Listen for changes in minute checkboxes
+    var minuteFilters = document.querySelectorAll('.minute-filter');
+    minuteFilters.forEach(function(filter) {
+      filter.addEventListener('change', function() {
+        selectedMinutes = Array.from(minuteFilters)
+          .filter(function(filter) { return filter.checked; })
+          .map(function(filter) { return parseInt(filter.value); });
+        chart.redraw(); // Update the chart
+      });
+    });
+
+    // Listen for changes in second checkboxes
+    var secondFilters = document.querySelectorAll('.second-filter');
+    secondFilters.forEach(function(filter) {
+      filter.addEventListener('change', function() {
+        selectedSeconds = Array.from(secondFilters)
+          .filter(function(filter) { return filter.checked; })
+          .map(function(filter) { return parseInt(filter.value); });
+        chart.redraw(); // Update the chart
+      });
+    });
+    /*
+    // Listen for changes in month checkboxes
+    var monthFilters = document.querySelectorAll('.month_filter');
+    monthFilters.forEach(function(filter) {
+    filter.addEventListener('change', function() {
+    selectedMonths = Array.from(monthFilters)
+      .filter(function(filter) { return filter.checked; })
+      .map(function(filter) { return parseInt(filter.value); });
+
+    // Debugging: Log the updated filter values
+    console.log('Selected Months:', selectedMonths);
+
+    generateMetricChart(document.getElementById('metric-selector').value);
+    });
+    });
+    */
+
+
+    /*// Listen for changes in year slider
+    var yearFilter = document.querySelector('.year-filter');
+    yearFilter.addEventListener('input', function() {
+    generateMetricChart(document.getElementById('metric-selector').value); // Update metric chart
+    });
+
+    // Listen for changes in day checkboxes
+    var dayFilters = document.querySelectorAll('.day-filter');
+    dayFilters.forEach(function(filter) {
+    filter.addEventListener('change', function() {
+        generateMetricChart(document.getElementById('metric-selector').value); // Update metric chart
+    });
+    });
+
+    // Listen for changes in hour checkboxes
+    var hourFilters = document.querySelectorAll('.hour-filter');
+    hourFilters.forEach(function(filter) {
+    filter.addEventListener('change', function() {
+        generateMetricChart(document.getElementById('metric-selector').value); // Update metric chart
+    });
+    });
+
+    // Listen for changes in minute checkboxes
+    var minuteFilters = document.querySelectorAll('.minute-filter');
+    minuteFilters.forEach(function(filter) {
+    filter.addEventListener('change', function() {
+        generateMetricChart(document.getElementById('metric-selector').value); // Update metric chart
+      });
+    });
+
+    // Listen for changes in second checkboxes
+    var secondFilters = document.querySelectorAll('.second-filter');
+    secondFilters.forEach(function(filter) {
+    filter.addEventListener('change', function() {
+        generateMetricChart(document.getElementById('metric-selector').value); // Update metric chart
+    });
+    });
+    */
+    // Listen for changes in the metric selector dropdown
+    var metricSelector = document.getElementById('metric-chart-type'); // Update the ID to 'metric-chart-type'
+    metricSelector.addEventListener('change', function() {
+    var selectedMetric = metricSelector.value;
+    generateMetricChart(selectedMetric); // Call the function with the selected metric name
+    });
+    // Function to generate a Highstock Line chart with data aggregation
+    function generateHighstockLineChart(aggregationInterval) {
+      var selectedChartContainer = document.getElementById('selected-chart');
+      selectedChartContainer.innerHTML = '';
+
+      var filteredTraces = filterTracesBySelection();
+
+      chart = Highcharts.stockChart(selectedChartContainer, {
+      chart: {
+        type: 'line',
+        },
+        title: {
+          text: 'Line Chart',
+        },
+        xAxis: {
+        type: 'datetime',
+        },
+        yAxis: {
+        title: {
+          text: 'Y-Axis Title',
+          },
+        },
+        series: [{
+        name: 'Series Name',
+        data: filteredTraces.map(function (trace) {
+        return [
+          new Date(trace.x).getTime(),
+          trace.close_close_minus_1,
+        ];
+      }),
+      dataGrouping: {
+        enabled: true,
+        approximation: 'average', // You can choose 'sum', 'average', etc.
+        forced: true,
+        units: [[
+          'minute', [aggregationInterval], // Set the aggregation interval
+        ]],
+        },
+      }],
+      // Add Highcharts stock tools (range selector, navigation buttons, etc.)
+      rangeSelector: {
+      enabled: true,
+      },
+      navigator: {
+        enabled: true,
+      },
+      scrollbar: {
+        enabled: true,
+      },
+      legend: {
+        enabled: true,
+      },
+      });
+      }
+
+      // Listen for changes in the aggregation interval dropdown
+      var aggregationIntervalSelector = document.getElementById('aggregation-interval');
+      aggregationIntervalSelector.addEventListener('change', function () {
+      var selectedInterval = parseInt(aggregationIntervalSelector.value);
+      generateHighstockLineChart(selectedInterval); // Call the function with the selected aggregation interval
+      });
+      // Function to generate a Highchart stock chart
+    function generateHighchartStockChart(chartType, aggregationInterval, groupingCriteria, selectedStatistic, selectedMetric) {
+      var selectedChartContainer = document.getElementById('selected-chart');
+      selectedChartContainer.innerHTML = '';
+
+      var filteredTraces = filterTracesBySelection();
+
+      // Define Y-axis data based on selectedStatistic and selectedMetric
+      var yAxisData;
+      if (selectedStatistic === 'mean') {
+        yAxisData = filteredTraces.map(function (trace) {
+        return trace[selectedMetric];
+      });
+      } else if (selectedStatistic === 'median') {
+        yAxisData = filteredTraces.map(function (trace) {
+          return trace['median_' + selectedMetric];
+      });
+      } else if (selectedStatistic === 'std_deviation') {
+        yAxisData = filteredTraces.map(function (trace) {
+          return trace['std_dev_' + selectedMetric];
+      });
+      } else {
+      // Handle other statistics as needed
+      }
+
+      // Define chart configuration based on chartType
+      var chartConfig = {
+      chart: {
+      type: chartType,
+      },
+      title: {
+        text: chartType + ' Chart',
+      },
+      xAxis: {
+        type: 'datetime',
+      },
+        yAxis: {
+        title: {
+        text: 'Y-Axis Title',
+      },
+      },
+        series: [{
+          name: 'Series Name',
+          data: yAxisData,
+          dataGrouping: {
+          enabled: true,
+          forced: true,
+          units: [[groupingCriteria, [1]]],
+          },
+      }],
+      // Add Highcharts stock tools (range selector, navigation buttons, etc.)
+      rangeSelector: {
+        enabled: true,
+      },
+      navigator: {
+        enabled: true,
+      },
+      scrollbar: {
+        enabled: true,
+      },
+      legend: {
+        enabled: true,
+      },
+      };
+
+      // Generate the chart
+      chart = Highcharts.stockChart(selectedChartContainer, chartConfig);
+      }
+
+      var runStatisticsButton = document.getElementById('run-statistics-button');
+      runStatisticsButton.addEventListener('click', function () {
+        var selectedChartType = document.getElementById('chart-type').value;
+        var selectedInterval = parseInt(document.getElementById('aggregation-interval').value);
+        var selectedGroupingCriteria = document.getElementById('grouping-criteria').value;
+        var selectedStatistic = document.getElementById('statistic-selector').value;
+        var selectedMetric = document.getElementById('metric-selector').value;
+
+        // Call the generateHighchartStockChart function with the selected parameters
+        generateHighchartStockChart(selectedChartType, selectedInterval, selectedGroupingCriteria, selectedStatistic, selectedMetric);
+        });
+
+
+      // Initialize the chart with the default selected chart type
+      //generateHighstockLineChart(1); // Default to 1-minute aggregation
+
+
+    // Initialize the chart with the default selected chart type
+
+    generateHighchartsLineChart(); // Default to Line Chart
+  </script>
+
+   <style>
+  /* Add CSS styles for the layout here */
+  .container {
+    display: flex;
+    width: 100%;
+  }
+
+  .left-column {
+    flex: 0.24; /* Adjust the flex value as needed */
+    padding: 20px;
+    border-right: 1px solid #ccc;
+    max-height: 600;
+  }
+
+  .right-column {
+    flex: 0.86;
+    display: flex; /* Add this to enable nested flex layout */
+    flex-direction: column; /* Create a column layout for the right column */
+    padding: 20px;
+  }
+
+  .chart {
+    flex: 1; /* The chart takes up all available space in the right column */
+    width: 100%;
+    height: 100%; /* Adjust the height as needed */
+  }
+
+  /* Add styles for the top section */
+  .top-section {
+    flex: 0.2; /* Adjust the flex value for the top section */
+    /*background-color: lightgray; /* Add your background color */
+
+  }
+  
+  .grouping-dropdown,
+  .aggregation-dropdown,
+  .metric-chart-type, 
+  .units-dropdown{
+  float: left;
+  margin-right: 10px; /* Add spacing between elements */
+  }
+
+
+  /* Add styles for the bottom section */
+  .bottom-section {
+    flex: 0.8; /* Adjust the flex value for the bottom section */
+    /*overflow: auto; /* Add overflow for scrolling if content overflows */
+  }
+
+  /* Adjust the styles as needed */
+  /* Style the series display checkboxes */
+  .series-checkboxes {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px; /* Add some spacing above the checkboxes */
+  }
+
+  .form-check {
+  margin-bottom: 5px; /* Add spacing between checkboxes */
+  }
+
+  /* Style the chart time display */
+  .chart-time {
+  margin-top: 10px; /* Add spacing above the chart time */
+  font-weight: bold;
+  }
+
+
+  </style>
+</body>
+</html>
