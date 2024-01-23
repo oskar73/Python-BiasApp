@@ -27,5 +27,5 @@ urlpatterns = [
     path('api/statistics' ,views.api_statistics),
     path('home/',views.home, name='home'),
     path('', include('dash_integration.urls')),
-]
-   
+] 
+    
