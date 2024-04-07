@@ -28,4 +28,4 @@ urlpatterns = [
     path('home/',views.home, name='home'),
     path('', include('dash_integration.urls')),
 ] 
-                                       
+                                        
